@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Roles</h1>
+
+@foreach (var role in RoleManager.Roles)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @role.Name
+                    <p>
+                        @Html.ActionLink("Add user", "Add", new {  name=role.Name  })
+                    </p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in await @UserManager.GetUsersInRoleAsync(@role.Name))
+            {
+                <tr>
+                    <td>
+                        @user.UserName
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete user from role", "Delete", new {  name=user.UserName, role=role.Name, loggedUser=User.Identity.Name  })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

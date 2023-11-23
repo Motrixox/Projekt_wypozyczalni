@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>@TempData["roleName"]</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Users
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in UserManager.Users)
+        {
+            <tr>
+                <td>
+                    @user.UserName
+                </td>
+                <td>
+                    @Html.ActionLink("Add user", "AddUser", new {  name=user.UserName, role=TempData["roleName"], loggedUser=User.Identity.Name })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
